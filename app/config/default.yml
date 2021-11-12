@@ -1,0 +1,12 @@
+server:
+  port: 3000
+
+logs:
+  error:
+    dir: 'logs/exceptions.log'
+    maxFiles: 5
+    maxsize: 1000000
+  debug:
+    dir: 'logs/debug.log'
+    maxFiles: 5
+    maxsize: 1000000
