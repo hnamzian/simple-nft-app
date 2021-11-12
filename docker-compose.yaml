@@ -1,0 +1,8 @@
+version: "3.7"
+services:
+  # ganachecli: simulated test rpc on dev environment
+  ganache:
+    image: trufflesuite/ganache-cli
+    container_name: ganache-cli
+    ports:
+      - 8545:8545
