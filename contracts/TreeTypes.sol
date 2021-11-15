@@ -33,7 +33,7 @@ contract TreeTypes is Ownable {
      * @return _O2Rate Oxygen emission rate of tree type
      * @return _price unit price of tree type
      */
-    function getTreeTypeByName(string calldata name_)
+    function getTreeTypeByName(string memory name_)
         public
         view
         returns (

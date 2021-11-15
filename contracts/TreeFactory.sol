@@ -28,8 +28,8 @@ contract TreeFactory is Trees, TreeTypes {
      */
     function _createTree(
         address owner_,
-        string calldata typeName_,
-        string calldata region_,
+        string memory typeName_,
+        string memory region_,
         uint256 plantedDate_,
         uint256 birthDate_,
         uint8 height_,
