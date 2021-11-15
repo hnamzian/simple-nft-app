@@ -54,6 +54,14 @@ contract TreeTypes is Ownable {
     }
 
     /**
+     * returns all existing tree type Ids
+     * @return list of tree type ids
+     */
+    function getTreeTypeIds() public view returns (bytes32[] memory) {
+        return _treeTypeIdsSet.values();
+    }
+
+    /**
      * @dev adds new tree type allowed by owner
      * @param name_ tree type name
      * @param O2Rate_ Oxygen emission rate of tree type
