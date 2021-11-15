@@ -25,6 +25,34 @@ contract TreeTypes is Ownable {
     // _treeTypeIdsSet provides CRUD operation over tree type Ids
     EnumerableSet.Bytes32Set internal _treeTypeIdsSet;
 
+
+    /**
+     * @dev returns tree type structure data related to specified tree type name
+     * @param name_ tree type name
+     * @return _name tree type name
+     * @return _O2Rate Oxygen emission rate of tree type
+     * @return _price unit price of tree type
+     */
+    function getTreeTypeByName(string calldata name_)
+        public
+        view
+        returns (
+            string memory _name,
+            uint256 _O2Rate,
+            uint256 _price
+        )
+    {
+        bytes32 _typeId = keccak256(abi.encodePacked(name_));
+
+        require(_treeTypeIdsSet.contains(_typeId), "tree type name does not exist");
+
+        TreeType memory _treeType = _treeTypes[_typeId];
+
+        _name = _treeType.name;
+        _O2Rate = _treeType.O2Rate;
+        _price = _treeType.price;
+    }
+
     /**
      * @dev adds new tree type allowed by owner
      * @param name_ tree type name
