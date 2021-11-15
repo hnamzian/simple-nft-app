@@ -31,6 +31,15 @@ contract TreeFactory is TreeTypes {
     mapping(address => EnumerableSet.UintSet) internal _treesOf;
 
     /**
+     * @dev returns Ids of trees owned by a specific account
+     * @param owner_ owner of trees
+     * @return list of tree Ids
+     */
+    function getTreesOf(address owner_) public view returns (uint256[] memory) {
+        return _treesOf[owner_].values();
+    }
+
+    /**
      * @dev creates new tree owned by specified address
      * @param owner_ tree owner
      * @param typeName_ tree type name
