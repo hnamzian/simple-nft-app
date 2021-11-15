@@ -46,4 +46,13 @@ contract TreeTypes is Ownable {
         }
     }
 
+    /**
+     * @dev removes a tree type Id related to tree type name
+     * @param name_ tree type name
+     */
+    function removeTreeTypeByName(string calldata name_) public onlyOwner {
+        bytes32 _typeId = keccak256(abi.encodePacked(name_));
+
+        _treeTypeIdsSet.remove(_typeId);
+    }
 }
