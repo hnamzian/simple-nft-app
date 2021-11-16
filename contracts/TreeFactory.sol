@@ -25,27 +25,26 @@ contract TreeFactory is Trees, TreeTypes {
      * @param birthDate_ birth date of tree
      * @param height_ height of tree
      * @param diameter_ diameter of tree
+     * @return _treeId id of created tree
      */
     function _createTree(
         address owner_,
         string memory typeName_,
         string memory region_,
-        uint256 plantedDate_,
         uint256 birthDate_,
         uint8 height_,
         uint8 diameter_
-    ) public payable {
+    ) public payable returns (uint256 _treeId) {
         Tree memory _tree = Tree(
             typeName_,
             region_,
-            plantedDate_,
             birthDate_,
             height_,
             diameter_,
             block.timestamp
         );
         _trees.push(_tree);
-        uint256 _treeId = _trees.length - 1;
+        _treeId = _trees.length - 1;
 
         _treesOf[owner_].add(_treeId);
     }
