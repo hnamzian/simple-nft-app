@@ -29,17 +29,17 @@ contract TreeTypes is Ownable {
     /**
      * @dev returns tree type structure data related to specified tree type name
      * @param name_ tree type name
-     * @return _name tree type name
-     * @return _O2Rate Oxygen emission rate of tree type
-     * @return _price unit price of tree type
+     * @return name tree type name
+     * @return O2Rate Oxygen emission rate of tree type
+     * @return price unit price of tree type
      */
     function getTreeTypeByName(string memory name_)
         public
         view
         returns (
-            string memory _name,
-            uint256 _O2Rate,
-            uint256 _price
+            string memory name,
+            uint256 O2Rate,
+            uint256 price
         )
     {
         bytes32 _typeId = keccak256(abi.encodePacked(name_));
@@ -48,9 +48,9 @@ contract TreeTypes is Ownable {
 
         TreeType memory _treeType = _treeTypes[_typeId];
 
-        _name = _treeType.name;
-        _O2Rate = _treeType.O2Rate;
-        _price = _treeType.price;
+        name = _treeType.name;
+        O2Rate = _treeType.O2Rate;
+        price = _treeType.price;
     }
 
     /**
@@ -75,7 +75,7 @@ contract TreeTypes is Ownable {
         bytes32 _typeId = keccak256(abi.encodePacked(name_));
 
         // add new tree type if not exists
-        if (_treeTypeIdsSet.contains(_typeId)) {
+        if (!_treeTypeIdsSet.contains(_typeId)) {
             _treeTypes[_typeId] = TreeType(name_, O2Rate_, price_);
 
             _treeTypeIdsSet.add(_typeId);
@@ -90,5 +90,17 @@ contract TreeTypes is Ownable {
         bytes32 _typeId = keccak256(abi.encodePacked(name_));
 
         _treeTypeIdsSet.remove(_typeId);
+    }
+
+    function bytes32ToString(bytes32 _bytes32) public pure returns (string memory) {
+        uint8 i = 0;
+        while(i < 32 && _bytes32[i] != 0) {
+            i++;
+        }
+        bytes memory bytesArray = new bytes(i);
+        for (i = 0; i < 32 && _bytes32[i] != 0; i++) {
+            bytesArray[i] = _bytes32[i];
+        }
+        return string(bytesArray);
     }
 }
