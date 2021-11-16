@@ -44,9 +44,28 @@ contract TreeTypes is Ownable {
     {
         bytes32 _typeId = keccak256(abi.encodePacked(name_));
 
-        require(_treeTypeIdsSet.contains(_typeId), "tree type name does not exist");
+        return getTreeTypeById(_typeId);
+    }
 
-        TreeType memory _treeType = _treeTypes[_typeId];
+    /**
+     * @dev returns tree type structure data related to specified tree type Id
+     * @param typeId_ tree type Id
+     * @return name tree type name
+     * @return O2Rate Oxygen emission rate of tree type
+     * @return price unit price of tree type
+     */
+    function getTreeTypeById(bytes32 typeId_)
+        public
+        view
+        returns (
+            string memory name,
+            uint256 O2Rate,
+            uint256 price
+        )
+    {
+        require(_treeTypeIdsSet.contains(typeId_), "tree type name does not exist");
+
+        TreeType memory _treeType = _treeTypes[typeId_];
 
         name = _treeType.name;
         O2Rate = _treeType.O2Rate;
@@ -92,15 +111,4 @@ contract TreeTypes is Ownable {
         _treeTypeIdsSet.remove(_typeId);
     }
 
-    function bytes32ToString(bytes32 _bytes32) public pure returns (string memory) {
-        uint8 i = 0;
-        while(i < 32 && _bytes32[i] != 0) {
-            i++;
-        }
-        bytes memory bytesArray = new bytes(i);
-        for (i = 0; i < 32 && _bytes32[i] != 0; i++) {
-            bytesArray[i] = _bytes32[i];
-        }
-        return string(bytesArray);
-    }
 }
