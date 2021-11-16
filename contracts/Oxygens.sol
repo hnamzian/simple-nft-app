@@ -4,6 +4,8 @@ pragma solidity ^0.8.4;
 import "./Trees.sol";
 import "./TreeTypes.sol";
 
+import "hardhat/console.sol";
+
 contract Oxygens is Trees, TreeTypes {
     using EnumerableSet for EnumerableSet.UintSet;
 
@@ -30,6 +32,8 @@ contract Oxygens is Trees, TreeTypes {
      */
     function oxygensOf(address account_) public returns (uint256) {
         _updateOxygensOf(account_);
+
+        console.log(_oxygensOf[account_]);
         return _oxygensOf[account_];
     }
 
@@ -52,5 +56,7 @@ contract Oxygens is Trees, TreeTypes {
 
         _oxygensOf[account_] += _additionalO2;
         _totalOxygens += _additionalO2;
+
+        _lastTimeO2Updated[account_] = block.timestamp;
     }
 }
