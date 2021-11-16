@@ -11,7 +11,7 @@ const treeType = {
 };
 
 describe("TreeFactory", async () => {
-  before(async () => {
+  beforeEach(async () => {
     const TreeFactory = await ethers.getContractFactory("MockTreeFactory");
     treeFactory = await TreeFactory.deploy();
 
@@ -51,4 +51,33 @@ describe("TreeFactory", async () => {
     expect(tree.diameter).to.be.eq(diameter);
     expect(tree.transferredAt).to.be.eq(blockTime);
   });
+
+  it("should update tree ownership at transfer", async () => {
+    const [owner, alice, bob] = await ethers.getSigners();
+
+    const region = "Brazil";
+    const birthDate = Date.now();
+    const height = 1;
+    const diameter = 10;
+
+    await treeFactory.createTree(
+      alice.address,
+      treeType.name,
+      region,
+      birthDate,
+      height,
+      diameter
+    );
+
+    let aliceTrees = await treeFactory.getTreesOf(alice.address);
+
+    await treeFactory.updateTreesOfOnTransfer(alice.address, bob.address, treeIds[0]);
+
+    aliceTrees = await treeFactory.getTreesOf(alice.address);
+    const bobTrees = await treeFactory.getTreesOf(bob.address);
+
+    expect(aliceTrees).to.be.lengthOf(0);
+    expect(bobTrees).to.be.lengthOf(1);
+    expect(bobTrees[0]).to.be.eq(treeIds[0]);
+  })
 });
