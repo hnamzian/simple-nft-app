@@ -48,4 +48,15 @@ contract TreeFactory is Trees, TreeTypes {
 
         _treesOf[owner_].add(_treeId);
     }
+
+    /**
+     * @dev updates tree list of both sender and receiver at token transfer
+     * @param from_ account to send tree of its own
+     * @param to_ account to receive tree
+     * @param treeId_ id of token (tree) to be transfered
+     */
+    function _updateTreesOfOnTransfer(address from_, address to_, uint256 treeId_) internal {
+        _treesOf[from_].remove(treeId_);
+        _treesOf[to_].add(treeId_);
+    }
 }
