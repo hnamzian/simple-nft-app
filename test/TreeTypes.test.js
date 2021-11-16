@@ -5,7 +5,7 @@ const { parseEther } = require("@ethersproject/units");
 let treeTypes;
 
 describe("TreeTypes", async () => {
-  before(async () => {
+  beforeEach(async () => {
     const TreeTypes = await ethers.getContractFactory("TreeTypes");
     treeTypes = await TreeTypes.deploy();
   });
