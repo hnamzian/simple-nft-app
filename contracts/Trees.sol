@@ -16,7 +16,6 @@ contract Trees {
     struct Tree {
         string typeName;
         string region;
-        uint256 plantedDate;
         uint256 birthDate;
         uint8 height;
         uint8 diameter;
