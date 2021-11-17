@@ -32,7 +32,7 @@ contract TreeFactory is Trees, TreeTypes {
         string memory typeName_,
         string memory region_,
         uint256 birthDate_,
-        uint8 height_,
+        uint16 height_,
         uint8 diameter_
     ) internal returns (uint256 _treeId) {
         Tree memory _tree = Tree(

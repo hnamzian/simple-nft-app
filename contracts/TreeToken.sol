@@ -21,7 +21,7 @@ contract TreeToken is TreeFactory, Oxygens, ERC721 {
         string calldata typeName_,
         string calldata region_,
         uint256 birthDate_,
-        uint8 height_,
+        uint16 height_,
         uint8 diameter_
     ) public payable {
         (, , uint256 _price) = getTreeTypeByName(typeName_);

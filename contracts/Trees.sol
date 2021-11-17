@@ -17,7 +17,7 @@ contract Trees {
         string typeName;
         string region;
         uint256 birthDate;
-        uint8 height;
+        uint16 height;
         uint8 diameter;
         uint256 transferredAt;
     }
@@ -42,7 +42,7 @@ contract Trees {
             string memory typeName,
             string memory region,
             uint256 birthDate,
-            uint8 height,
+            uint16 height,
             uint8 diameter,
             uint256 transferredAt
         )
