@@ -38,3 +38,22 @@ export class PurchaseTreeDto {
   @ApiProperty({ type: String, description: 'Diameter of tree (mm)', example: 20 })
   @IsNumber() diameter;
 }
+
+export class ApprovalDto {
+  @ApiProperty({ type: String, description: 'Account address to approve its tree', example: '0x' })
+  @IsString() from;
+
+  @ApiProperty({ type: String, description: 'Account address to receive approval of tree', example: '0x' })
+  @IsString() to;
+}
+
+export class TransferDto {
+  @ApiProperty({ type: String, description: 'Account address to send its tree', example: '0x' })
+  @IsString() from;
+
+  @ApiProperty({ type: String, description: 'Account address to receive tree', example: '0x' })
+  @IsString() to;
+
+  @ApiProperty({ type: String, description: 'Tree Id', example: '0' })
+  @IsString() treeId;
+}

@@ -2,7 +2,7 @@ import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { Web3Provider } from 'src/core/web3-provider';
 import * as config from 'config';
 import { abi as treeTokenAbi } from "../../contracts/TreeToken.json";
-import { AddTreeTypeDto, PurchaseTreeDto } from './dto/trees.dto';
+import { AddTreeTypeDto, ApprovalDto, PurchaseTreeDto, TransferDto } from './dto/trees.dto';
 import { ITree, ITreeType } from './interface/trees.interface';
 
 @Injectable()
@@ -79,6 +79,24 @@ export class TreesProvider implements OnModuleInit {
     return true;
   }
 
+  approveTree = async (approval: ApprovalDto, treeId: string) => {
+    await this.treeContract.methods.approve(approval.to, treeId).send({
+      from: approval.from,
+      gas: 3000000
+    });
+  }
+
+  getApproval = async (treeId: string) => {
+    return await this.treeContract.methods.getApproved(treeId).call();
+  }
+
+  transfer = async (transfer: TransferDto, sender: string) => {
+    await this.treeContract.methods.transferFrom(transfer.from, transfer.to, transfer.treeId).send({
+      from: sender,
+      gas: 3000000
+    });
+  }
+
   getTreesOf = async (account: string): Promise<ITree[]> => {
     const treeIds = await this.treeContract.methods.getTreesOf(account).call();
     const trees: ITree[] = await Promise.all(treeIds.map(async treeId => {
@@ -88,13 +106,16 @@ export class TreesProvider implements OnModuleInit {
         height,
         diameter,
         transferredAt } = await this.treeContract.methods.getTreeById(treeId).call();
-      return { typeName,
+      return {
+        treeId,
+        typeName,
         region,
         birthDate,
         height,
         diameter,
-        transferredAt } as ITree;
-    }));    
+        transferredAt
+      } as ITree;
+    }));
 
     return trees;
   }
