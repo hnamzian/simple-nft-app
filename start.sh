@@ -2,6 +2,9 @@
 
 npm run compile
 
+mkdir -p app/contracts
+cp artifacts/contracts/TreeToken.sol/TreeToken.json ./app/contracts/TreeToken.json
+
 docker network create nft_network
 
 docker-compose up -d
