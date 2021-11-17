@@ -16,4 +16,8 @@ export class Web3Provider {
   getEthBalance = async (account: string) => {
     return await this.Web3.eth.getBalance(account);
   }
+
+  getContract = async (abi: any, address: string) => {
+    return new this.Web3.eth.Contract(abi, address)
+  }
 }
