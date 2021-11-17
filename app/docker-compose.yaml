@@ -9,6 +9,7 @@ services:
     environment:
       - NODE_ENV=development
       - SERVER_PORT=3000
+      - BLOCKCHAIN_URL=http://ganache-cli:8545
       - TREE_TOKEN_ADDRESS=$TREE_TOKEN_ADDRESS
     networks:
       - proxynet
