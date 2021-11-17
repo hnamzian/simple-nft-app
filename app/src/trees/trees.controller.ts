@@ -42,8 +42,12 @@ export class TreesController {
   @ApiBody({ type: PurchaseTreeDto })
   @ApiParam({ name: 'account', type: 'string' })
   async purchaseTree(@Body() tree: PurchaseTreeDto, @Param('account') account: string) {
-    console.log(account);
-    
     await this.treesProvider.purchaseTree(tree, account);
+  }
+
+  @Get('/:account')
+  @ApiParam({ name: 'account', type: 'string' })
+  async getTreesOf(@Param('account') account: string) {
+    return await this.treesProvider.getTreesOf(account);
   }
 }

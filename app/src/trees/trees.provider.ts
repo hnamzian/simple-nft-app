@@ -3,7 +3,7 @@ import { Web3Provider } from 'src/core/web3-provider';
 import * as config from 'config';
 import { abi as treeTokenAbi } from "../../contracts/TreeToken.json";
 import { AddTreeTypeDto, PurchaseTreeDto } from './dto/trees.dto';
-import { ITreeType } from './interface/trees.interface';
+import { ITree, ITreeType } from './interface/trees.interface';
 
 @Injectable()
 export class TreesProvider implements OnModuleInit {
@@ -77,5 +77,25 @@ export class TreesProvider implements OnModuleInit {
         gas: 3000000
       });
     return true;
+  }
+
+  getTreesOf = async (account: string): Promise<ITree[]> => {
+    const treeIds = await this.treeContract.methods.getTreesOf(account).call();
+    const trees: ITree[] = await Promise.all(treeIds.map(async treeId => {
+      const { typeName,
+        region,
+        birthDate,
+        height,
+        diameter,
+        transferredAt } = await this.treeContract.methods.getTreeById(treeId).call();
+      return { typeName,
+        region,
+        birthDate,
+        height,
+        diameter,
+        transferredAt } as ITree;
+    }));    
+
+    return trees;
   }
 }
