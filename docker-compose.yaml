@@ -6,13 +6,10 @@ services:
     container_name: ganache-cli
     ports:
       - 8545:8545
-  app:
-    build: app/
-    image: nft_service:latest
-    container_name: nft_service
-    ports:
-      - '3000:3000'
-    environment:
-      - NODE_ENV="development"
-      - SERVER_PORT="3000"
+    networks:
+      - my-proxy-net
+networks:
+  my-proxy-net:
+    external:
+      name: nft_network
 
