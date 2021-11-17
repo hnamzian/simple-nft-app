@@ -26,6 +26,11 @@ export class TreesController {
     return await this.treesProvider.getTreeTypeByName(treeType.treeTypeName);
   }
 
+  @Get('/tree-type')
+  async getTreeTypes() {
+    return await this.treesProvider.getTreeTypes();
+  }
+
   @Delete('/tree-type/:treeTypeName')
   @ApiParam({ name: 'treeTypeName', type: 'string' })
   async removeTreeType(@Param() treeType: RemoveTreeTypeDto) {

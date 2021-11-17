@@ -41,6 +41,18 @@ export class TreesProvider implements OnModuleInit {
     return treeType;
   }
 
+  getTreeTypes = async () => {
+    const typeIds = await this.treeContract.methods.getTreeTypeIds().call();
+
+    const treeTypes = await Promise.all(typeIds.map(async typeId => {
+      const { name, O2Rate, price } = await this.treeContract.methods.getTreeTypeById(typeId).call();
+      const treeType: ITreeType = { name, O2Rate, price };
+      return treeType;
+    }))
+
+    return treeTypes;
+  }
+
   removeTreeTypeByName = async (treeTypeName: string): Promise<boolean> => {
     const owner = (await this.web3Provider.getAccounts())[0]
     await this.treeContract.methods.removeTreeTypeByName(treeTypeName).send({
@@ -48,5 +60,5 @@ export class TreesProvider implements OnModuleInit {
       gas: 3000000
     });
     return true;
-  } 
+  }
 }
