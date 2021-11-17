@@ -3,7 +3,7 @@ import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { Web3Provider } from 'src/core/web3-provider';
 
 @Controller('accounts')
-@ApiTags('rayshomar')
+@ApiTags('accounts')
 export class AccountsController {
   constructor(private readonly web3Provider: Web3Provider) { }
 
