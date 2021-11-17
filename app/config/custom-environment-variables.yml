@@ -1,2 +1,5 @@
 server:
   port: 'SERVER_PORT'
+
+treeToken:
+  address: 'TREE_TOKEN_ADDRESS'
