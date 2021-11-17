@@ -119,4 +119,15 @@ export class TreesProvider implements OnModuleInit {
 
     return trees;
   }
+
+  claimOxygens = async (account: string) => {
+    await this.treeContract.methods.claimOxygens().send({
+      from: account,
+      gas: 3000000
+    });
+  }
+
+  getOxygensOf = async (account: string) => {
+    return await this.treeContract.methods.oxygensOf(account).call();
+  }
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
 import { AddTreeTypeDto, ApprovalDto, GetTreeTypeDto, PurchaseTreeDto, RemoveTreeTypeDto, TransferDto } from './dto/trees.dto';
 import { TreesProvider } from './trees.provider';
@@ -74,5 +74,21 @@ export class TreesController {
   @ApiParam({ name: 'sender', type: 'string' })
   async transferTree(@Body() transfer: TransferDto, @Param('sender') sender: string) {
     await this.treesProvider.transfer(transfer, sender);
+  }
+
+  @Get('o2/:account')
+  @ApiParam({ name: 'account', type: 'string' })
+  async getOxygens(@Param('account') account: string) {
+    const oxygens = await this.treesProvider.getOxygensOf(account);
+
+    return {
+      oxygens,
+    }
+  }
+
+  @Put('o2/claim/:account')
+  @ApiParam({ name: 'account', type: 'string' })
+  async claimOxygens(@Param('account') account: string) {
+    await this.treesProvider.claimOxygens(account);
   }
 }
