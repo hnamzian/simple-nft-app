@@ -10,7 +10,7 @@ const treeType = {
   price: parseEther("0.001"),
 };
 
-describe("TreeTypes", async () => {
+describe("TreeToken", async () => {
   beforeEach(async () => {
     const TreeToken = await ethers.getContractFactory("TreeToken");
     treeToken = await TreeToken.deploy();
@@ -60,4 +60,41 @@ describe("TreeTypes", async () => {
     expect(aliceTree.diameter).to.be.eq(tree.diameter);
     expect(aliceTree.transferredAt).to.be.eq(blockTime);
   });
+
+  it("should transfer tree token from ALice to Bob", async () => {
+    const [owner, alice, bob] = await ethers.getSigners();
+
+    const tree = {
+      typeName: treeType.name,
+      region: "Brazil",
+      birthDate: Date.now(),
+      height: 1,
+      diameter: 10,
+    };
+
+    await treeToken
+      .connect(alice)
+      .purchaseTree(
+        tree.typeName,
+        tree.region,
+        tree.birthDate,
+        tree.height,
+        tree.diameter,
+        {
+          value: treeType.price,
+        }
+      );
+
+    const treeIds = await treeToken.getTreesOf(alice.address);
+
+    await treeToken.connect(alice).approve(bob.address, treeIds[0]);
+    await treeToken.connect(bob).transferFrom(alice.address, bob.address, treeIds[0]);
+
+    const aliceTrees = await treeToken.getTreesOf(alice.address);
+    const bobTrees = await treeToken.getTreesOf(bob.address);
+
+    expect(aliceTrees).to.be.lengthOf(0);
+    expect(bobTrees).to.be.lengthOf(1);
+    expect(bobTrees[0]).to.be.eq(treeIds[0]);
+  })
 });
