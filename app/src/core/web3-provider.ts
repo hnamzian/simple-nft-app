@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 const Web3 = require('web3');
+import * as config from 'config';
 
 @Injectable()
 export class Web3Provider {
   private Web3;
 
   constructor() {
-    this.Web3 = new Web3("http://localhost:8545");  
+    this.Web3 = new Web3(config.get('blockchain.url'));  
   }
 
   getAccounts = async () => {
