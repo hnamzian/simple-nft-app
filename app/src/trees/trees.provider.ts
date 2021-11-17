@@ -35,8 +35,18 @@ export class TreesProvider implements OnModuleInit {
   }
 
   getTreeTypeByName = async (treeTypeName: string): Promise<ITreeType> => {
+    // todo: handle revert message
     const { name, O2Rate, price } = await this.treeContract.methods.getTreeTypeByName(treeTypeName).call();
     const treeType: ITreeType = { name, O2Rate, price };
     return treeType;
   }
+
+  removeTreeTypeByName = async (treeTypeName: string): Promise<boolean> => {
+    const owner = (await this.web3Provider.getAccounts())[0]
+    await this.treeContract.methods.removeTreeTypeByName(treeTypeName).send({
+      from: owner,
+      gas: 3000000
+    });
+    return true;
+  } 
 }

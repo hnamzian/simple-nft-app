@@ -16,3 +16,8 @@ export class GetTreeTypeDto {
   @ApiProperty({ type: String, description: 'Tree Type Name', example: 'Cinar' })
   @IsString() treeTypeName: string
 }
+
+export class RemoveTreeTypeDto {
+  @ApiProperty({ type: String, description: 'Tree Type Name', example: 'Cinar' })
+  @IsString() treeTypeName: string
+}
