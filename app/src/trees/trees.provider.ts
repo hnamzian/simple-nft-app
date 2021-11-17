@@ -2,7 +2,7 @@ import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { Web3Provider } from 'src/core/web3-provider';
 import * as config from 'config';
 import { abi as treeTokenAbi } from "../../contracts/TreeToken.json";
-import { AddTreeTypeDto } from './dto/trees.dto';
+import { AddTreeTypeDto, PurchaseTreeDto } from './dto/trees.dto';
 import { ITreeType } from './interface/trees.interface';
 
 @Injectable()
@@ -15,6 +15,7 @@ export class TreesProvider implements OnModuleInit {
 
   async onModuleInit() {
     const treeTokenAddress = config.get('treeToken.address');
+
     this.treeContract = await this.web3Provider.getContract(treeTokenAbi, treeTokenAddress);
   }
 
@@ -59,6 +60,22 @@ export class TreesProvider implements OnModuleInit {
       from: owner,
       gas: 3000000
     });
+    return true;
+  }
+
+  purchaseTree = async (tree: PurchaseTreeDto, buyer: string) => {
+    const { price } = await this.treeContract.methods.getTreeTypeByName(tree.typeName).call();
+
+    await this.treeContract.methods.purchaseTree(
+      tree.typeName,
+      tree.region,
+      +tree.birthDate,
+      +tree.height,
+      +tree.diameter).send({
+        from: buyer,
+        value: price,
+        gas: 3000000
+      });
     return true;
   }
 }

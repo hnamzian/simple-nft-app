@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
-import { AddTreeTypeDto, GetTreeTypeDto, RemoveTreeTypeDto } from './dto/trees.dto';
+import { AddTreeTypeDto, GetTreeTypeDto, PurchaseTreeDto, RemoveTreeTypeDto } from './dto/trees.dto';
 import { TreesProvider } from './trees.provider';
 
 @Controller('trees')
@@ -35,5 +35,15 @@ export class TreesController {
   @ApiParam({ name: 'treeTypeName', type: 'string' })
   async removeTreeType(@Param() treeType: RemoveTreeTypeDto) {
     return await this.treesProvider.removeTreeTypeByName(treeType.treeTypeName);
+  }
+
+
+  @Post('/:account')
+  @ApiBody({ type: PurchaseTreeDto })
+  @ApiParam({ name: 'account', type: 'string' })
+  async purchaseTree(@Body() tree: PurchaseTreeDto, @Param('account') account: string) {
+    console.log(account);
+    
+    await this.treesProvider.purchaseTree(tree, account);
   }
 }
