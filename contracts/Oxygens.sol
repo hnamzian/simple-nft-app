@@ -12,7 +12,7 @@ contract Oxygens is Trees, TreeTypes {
     // reflects total oxygens emitted by all trees (all trees updated foroxygens)
     uint256 internal _totalOxygens;
     // reflects total oxygens emotted by all trees owned by account
-    mapping(address => uint256) internal _oxygensOf;
+    mapping(address => uint256) public _oxygensOf;
 
     // reflects last time tree oxygens of an account updated 
     mapping(address => uint256) internal _lastTimeO2Updated;
@@ -26,15 +26,20 @@ contract Oxygens is Trees, TreeTypes {
     }
 
     /**
-     * @dev updates and returns total amount of oxygens emitted by trees owned by an account
+     * @dev returns total amount of oxygens emitted by trees owned by an account
      * @param account_ account address
-     * @return total oxygens
+     * @return oxygens total oxygens
      */
-    function oxygensOf(address account_) public returns (uint256) {
-        _updateOxygensOf(account_);
+    function oxygensOf(address account_) public view returns (uint256) {
+        uint256 _additionalO2 = _pendingOxygensOf(account_);
+        return _oxygensOf[account_] + _additionalO2;
+    }
 
-        console.log(_oxygensOf[account_]);
-        return _oxygensOf[account_];
+    /**
+     * @dev updates oxygens balance of claimee as message sender
+     */
+    function claimOxygens() public {
+        _updateOxygensOf(msg.sender);
     }
 
     /**
@@ -42,6 +47,19 @@ contract Oxygens is Trees, TreeTypes {
      * @param account_ account address which is owner of trees
      */
     function _updateOxygensOf(address account_) internal {
+        uint256 _additionalO2 = _pendingOxygensOf(account_);
+
+        _oxygensOf[account_] += _additionalO2;
+        _totalOxygens += _additionalO2;
+
+        _lastTimeO2Updated[account_] = block.timestamp;
+    }
+
+    /**
+     * @dev internal function to get unclaimed amount of oxygens from last time balance updated
+     * @param account_ account address which is owner of trees
+     */
+    function _pendingOxygensOf(address account_) internal view returns (uint256) {
         uint256[] memory _accountTrees = _treesOf[account_].values();
 
         uint256 _timePassed = block.timestamp - _lastTimeO2Updated[account_];
@@ -54,9 +72,6 @@ contract Oxygens is Trees, TreeTypes {
             _additionalO2 += _timePassed * _O2Rate;
         }
 
-        _oxygensOf[account_] += _additionalO2;
-        _totalOxygens += _additionalO2;
-
-        _lastTimeO2Updated[account_] = block.timestamp;
+        return _additionalO2;
     }
 }
