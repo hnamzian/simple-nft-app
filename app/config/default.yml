@@ -11,5 +11,8 @@ logs:
     maxFiles: 5
     maxsize: 1000000
 
+blockchain:
+  url: 'http://localhost:8545'
+
 treeToken:
   address: ''
