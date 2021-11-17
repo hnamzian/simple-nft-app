@@ -69,11 +69,11 @@ describe("TreeFactory", async () => {
       diameter
     );
 
-    let aliceTrees = await treeFactory.getTreesOf(alice.address);
+    const treeIds = await treeFactory.getTreesOf(alice.address);
 
     await treeFactory.updateTreesOfOnTransfer(alice.address, bob.address, treeIds[0]);
 
-    aliceTrees = await treeFactory.getTreesOf(alice.address);
+    const aliceTrees = await treeFactory.getTreesOf(alice.address);
     const bobTrees = await treeFactory.getTreesOf(bob.address);
 
     expect(aliceTrees).to.be.lengthOf(0);
