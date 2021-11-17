@@ -2,7 +2,7 @@ async function main() {
     const TreeToken = await ethers.getContractFactory("TreeToken");
     const treeToken = await TreeToken.deploy();
   
-    console.log("TreeToken deployed to:", treeToken.address);
+    console.log("TreeToken Address:", treeToken.address);
   }
   
   main()
